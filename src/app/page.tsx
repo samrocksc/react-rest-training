@@ -1,13 +1,24 @@
 'use client'
 import { useEffect, useState } from 'react'
-
 type User = { id: number; name: string; role: string }
 
 export default function Home() {
-  const [user, setUser] = useState<User | null>(null)
+  const [q, setQ] = useState('')
+  const [items, setItems] = useState<User[]>([])
+  const [page, setPage] = useState(0)
   useEffect(() => {
-    fetch('/api/user/1').then((r) => r.json()).then(setUser)
-  }, [])
-  if (!user) return <p>Loading...</p>
-  return <p>{user.name} — {user.role}</p>
+    const t = setTimeout(() => {
+      fetch(`/api/users?q=${q}&limit=4&offset=${page * 4}`)
+        .then((r) => r.json()).then((d) => setItems(d.items))
+    }, 300)
+    return () => clearTimeout(t)
+  }, [q, page])
+  return (
+    <div>
+      <input value={q} onChange={(e) => { setQ(e.target.value); setPage(0) }} placeholder="search" />
+      <ul>{items.map((u) => <li key={u.id}>{u.id} {u.name} {u.role}</li>)}</ul>
+      <button onClick={() => setPage((p) => Math.max(0, p - 1))}>prev</button>
+      <button onClick={() => setPage((p) => p + 1)}>next</button>
+    </div>
+  )
 }
