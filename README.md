@@ -1,36 +1,19 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# rest-challenge — REST + React Ladder
+Next.js 16 App Router. 4 commits = 4 phases. `src/data/users.json` is sorted by id.
 
-## Getting Started
+## Phases
+1. Single fetch (8e573a1) — see docs/01-single-fetch.md
+2. Search + pagination + debounce (next commit) — docs/02-search-pagination.md
+4. Binary search by id (main) — docs/04-binary-search.md + src/app/binarySearch.ts (do it in React)
 
-First, run the development server:
+## Quick start
+npm install && npm run dev
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Reset
+git log --oneline
+git checkout <sha>          # time-travel to phase
+git checkout main           # back to final
+cat RESET.md
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Verify flow
+Implement → tell Rocksteady "verify me" → auto checks build/lint/curl → switch to next branch/commit.

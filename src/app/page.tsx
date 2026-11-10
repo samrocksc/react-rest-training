@@ -1,24 +1,22 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { binarySearchById } from '@/lib/binarySearch'
 type User = { id: number; name: string; role: string }
 
 export default function Home() {
-  const [q, setQ] = useState('')
-  const [items, setItems] = useState<User[]>([])
-  const [page, setPage] = useState(0)
+  const [all, setAll] = useState<User[]>([])
+  const [target, setTarget] = useState('')
+  const [found, setFound] = useState<User | undefined>()
+  useEffect(() => { fetch('/api/users?limit=100&offset=0').then(r=>r.json()).then(d=>setAll(d.items)) }, [])
   useEffect(() => {
-    const t = setTimeout(() => {
-      fetch(`/api/users?q=${q}&limit=4&offset=${page * 4}`)
-        .then((r) => r.json()).then((d) => setItems(d.items))
-    }, 300)
-    return () => clearTimeout(t)
-  }, [q, page])
+    const id = Number(target)
+    if (!Number.isFinite(id) || !target) { setFound(undefined); return }
+    setFound(binarySearchById(all, id))
+  }, [target, all])
   return (
     <div>
-      <input value={q} onChange={(e) => { setQ(e.target.value); setPage(0) }} placeholder="search" />
-      <ul>{items.map((u) => <li key={u.id}>{u.id} {u.name} {u.role}</li>)}</ul>
-      <button onClick={() => setPage((p) => Math.max(0, p - 1))}>prev</button>
-      <button onClick={() => setPage((p) => p + 1)}>next</button>
+      <input value={target} onChange={(e)=>setTarget(e.target.value)} placeholder="user id" />
+      <p>{found ? `${found.name} — ${found.role}` : 'no match'}</p>
     </div>
   )
 }
